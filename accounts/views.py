@@ -38,35 +38,27 @@ africastalking.initialize(username, api_key)
 #     def run(self):
 #         self.mail.send_mail()
 
-        
+     
+   
 def LogInView(request, *args, **kwargs):
     next_page = request.GET.get('next')
     form = LoginForm()
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data.get('email')
+            username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            print(email, password)
-            user = authenticate(email=email, password=password)
+            print(username, password)
+            user = authenticate(username=username, password=password)
             if user is not None:
                 if user.is_active:
                     login(request, user)
                     if next_page is not None:  
                         return HttpResponseRedirect(next_page)
-                    if request.user.is_doctor:
-                        return redirect('core:doctor-dashboard')
-                    if request.user.is_ministry:
-                        return redirect('custom-admin:index')
-                    if request.user.is_admin:
-                        return redirect('custom-admin:index')
-                    if request.user.is_doctor:
-                        return redirect('core:doctor-dashboard')
-                    return redirect('core:parent-dashboard')
+                    return redirect('core:index')
                 messages.error(request,"invalid Login! Try again")
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-            print(form.errors)
-            return render(request, 'auth/login.html')
+        print(form.errors)
     context = {
         'form': form,
     }
@@ -100,89 +92,10 @@ def RegisterView(request):
             mail = send_mail (mail_subject, mail_body,'noreply@courses.com',[user.email], fail_silently=False)
             messages.success(request, "Account created, Check your email to activate your account")
             return redirect('accounts:login')
+        print(form.errors)
+        return render(request, 'auth/register.html')
             
     return render(request, 'auth/register.html', {'form': form})
-
-def DoctorRegistration(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        license_no = request.POST.get('license_no')
-        password1 = request.POST.get('password')
-        password2 = request.POST.get('password2')
-        
-        if username == "":
-            messages.error(request, "Username is required")
-        if email == "":
-            messages.error(request, "Email is required")
-        if phone == "":
-            messages.error(request, "phone is required")
-        if password1 == "":
-            messages.error(request, "Password is required")
-        if password2 == "":
-            messages.error(request, "Repeat Password is required")
-            return redirect('accounts:register-doctor')
-        if license_no == "":
-            messages.error(request, "License Number is required")
-            return redirect('accounts:register-doctor')
-        
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "A user with the username exists")
-        if User.objects.filter(phone_no=phone).exists():
-            messages.error(request, "The Phone Number has already been taken")
-        if User.objects.filter(email=email).exists():
-            messages.error(request, "The Email has already been taken")
-            return redirect('accounts:register-doctor')
-
-        
-        if password1 != password2:
-            messages.error(request, "Passwords do not match")
-        if len(password1)<6:
-            messages.error(request,"Password is too short")
-            return redirect('accounts:register-doctor') 
-            
-        if len(license_no)<6:
-            messages.error(request,"License Number is too short")
-            return redirect('accounts:register-doctor')
-
-        if Doctor.objects.filter(license_no=license_no).exists():
-            messages.error(request, "The License Number has already been taken")
-            return redirect('accounts:register-doctor')
-                
-        else:
-            user = User.objects.create_user(username=username, 
-                                            email=email,
-                                            phone_no=phone,
-                                            is_doctor=True,
-                                            is_parent=False
-
-            )
-            user.set_password(password1)
-            user.is_active=False
-            user.save()
-
-            doctor = Doctor.objects.create(user=user,
-                                            license_no=license_no
-            )
-            doctor.save()               
-            
-            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-            domain = get_current_site(request).domain #gives us the domain
-            link = reverse('accounts:activate', 
-                            kwargs={
-                                'uidb64':uidb64, 
-                                'token':token_gen.make_token(user)
-                                    })
-            activate_url = f"http://{domain+link}"
-            
-            mail_subject = "Activate your account"
-            mail_body = f"hi {user.username} click the link below to verify your account\n {activate_url}"
-            mail = send_mail (mail_subject, mail_body,'noreply@courses.com',[email], fail_silently=False)
-            messages.success(request, "Account created, Check your email to activate your account")
-            return redirect('accounts:login')
-            
-    return render(request, 'auth/register-doctor.html', {})
 
 def VerificationView(request,uidb64, token):
 

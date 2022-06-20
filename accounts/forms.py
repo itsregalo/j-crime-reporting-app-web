@@ -3,20 +3,13 @@ from .models import *
 # import authenicate
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.http import request
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control floating'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control floating'}))
+    username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'validated'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'validated'}))
 
-    fields = ['email', 'password']
-
-    def clean_email(self):
-        email = self.cleaned_data.get('email')
-        if email:
-            user = User.objects.filter(email=email)
-            if not user:
-                raise forms.ValidationError("Invalid email")
-        return email
+    fields = ['username', 'password']
 
     def clean_password(self):
         # passeord length must be greater than 8 characters
@@ -26,23 +19,19 @@ class LoginForm(forms.Form):
         return password
 
     def clean(self):
-        email = self.cleaned_data.get('email')
+        username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
-
-        if email and password:
-            user = authenticate(email=email, password=password)
-            if not user:
-                raise forms.ValidationError("Invalid email or password")
-            if not user.is_active:
-                raise forms.ValidationError("This user is not active")
+        user = authenticate(username=username, password=password)
+        if user is None:
+            raise forms.ValidationError("Invalid username or password")
         return self.cleaned_data
 
 class RegistrationForm(forms.Form):
-    username = forms.CharField(label='Username', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control floating', 'placeholder': 'Username'}))
-    email = forms.EmailField(label='Email', max_length=100, widget=forms.EmailInput(attrs={'class': 'form-control floating' , 'placeholder': 'Email'}))
-    phone_no = forms.CharField(label='Phone No', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control floating', 'placeholder': 'Phone No'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control floating', 'placeholder': 'Password'}))
-    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control floating', 'placeholder': 'Confirm Password'}))
+    username = forms.CharField(label='Username', max_length=100, widget=forms.TextInput(attrs={'class': 'validate', 'placeholder': 'Username'}))
+    email = forms.EmailField(label='Email', max_length=100, widget=forms.EmailInput(attrs={'class': 'validate' , 'placeholder': 'Email'}))
+    phone_no = forms.CharField(label='Phone No', max_length=100, widget=forms.TextInput(attrs={'class': 'validate', 'placeholder': 'Phone No'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'validate', 'placeholder': 'Password'}))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'validate', 'placeholder': 'Confirm Password'}))
 
     fields = ['username', 'email', 'phone_no', 'password', 'confirm_password']
 
@@ -97,12 +86,10 @@ class RegistrationForm(forms.Form):
         # check if user already exists
         user = User.objects.filter(username=username)
         if user:
-            messages.error(request, 'Username already exists')
             raise forms.ValidationError('Username already exists')
            
         user = User.objects.filter(email=email)
         if user:
-            messages.error(request, 'Email already exists')
             raise forms.ValidationError('Email already exists')
         
         # pick last 9 digits of phone no

@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Register {% endblock title %}
+{% block body %}
+
+<!-- START navigation -->
+<nav class="fixedtop topbar navigation" role="navigation">
+  <div class="nav-wrapper container">
+    <a id="logo-container" href="index.html" class=" brand-logo " ><i class="mdi mdi-ring"></i>JCR</a>
+      <a href="#" data-target="" class="waves-effect waves-circle navicon back-button htmlmode show-on-large "><i class="mdi mdi-chevron-left" data-page=""></i></a>
+
+      <a href="#" data-target="slide-nav" class="waves-effect waves-circle navicon sidenav-trigger show-on-large"><i class="mdi mdi-menu"></i></a>
+
+      <a href="#" data-target="slide-settings" class="waves-effect waves-circle navicon right sidenav-trigger show-on-large pulse"><i class="mdi mdi-tune"></i></a>
+
+      <a href="#" data-target="" class="waves-effect waves-circle navicon right nav-site-mode show-on-large"><i class="mdi mdi-invert-colors mdi-transition1"></i></a>
+  </div>
+</nav>
+
+
+<ul id="slide-nav" class="sidenav sidemenu">
+  {% include 'partials/navigation.html' %}
+</ul>
+
+<!-- END navigation -->
+
+
+<ul id="slide-settings" class="sidenav sidesettings right fixed">
+  <li class="menulinks">
+    <ul class="collapsible">
+    <!-- SIDEBAR - START -->
+
+  <!-- MAIN MENU - START -->
+
+          {% include 'partials/main-menu-theme.html' %}
+          
+  <!-- MAIN MENU - END -->
+
+
+
+<!--  SIDEBAR - END -->
+    </ul>
+  </li>
+  </ul></li>
+</ul>
+
+<div class="container">
+  <div class="section">
+<h5 class="pagetitle">Login</h5>
+
+<p>Login to access more of our features </p>
+<div class="divider"></div>
+  </div>
+ </div>	
+
+
+<div class="container">
+  <div class="section">
+
+
+  <div class="row ">
+             
+      <form action="{% url 'accounts:login' %}" method="POST">{% csrf_token %}
+        <div class="input-field col s12">
+          {{form.username}}
+          <label for="username">Username</label>
+          <span class="helper-text" data-error="{{form.username.error}}" data-success="right">{{ form.username.error }}</span>
+        </div>
+  
+      
+        <div class="input-field col s12">
+          {{form.password}}
+          <label for="password">Password</label>
+          <span class="helper-text" data-error="{{form.password.error}}" data-success="right">{{ form.password.error }}</span>
+        </div>
+  
+        <div class="input-field col s12">
+          <button class="waves-effect waves-light btn blue-grey lighten-2" type="submit">Submit</button>
+        </div>
+      </form>
+  </div>
+  </div>
+  
+<div class="divider"></div>
+
+  
+
+
+  </div>
+  
+
+  </div>
+</div>
+
+
+
+
+
+<footer class="page-footer">
+  {% include 'partials/footer.html' %}
+</footer>
+
+<div class="backtotop">
+  <a class="btn-floating btn primary-bg">
+    <i class="mdi mdi-chevron-up"></i>
+  </a>
+</div>
+
+
+
+
+  <div class="footer-menu">
+    {% include 'partials/bottom-nav.html' %}
+  </div>
+
+{% endblock body %}
+
+
+
+
