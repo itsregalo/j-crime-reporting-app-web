@@ -21,7 +21,7 @@ class CrimeReportImageForm(forms.ModelForm):
         fields = ['image']
 
     widgets = {
-        'image': forms.FileInput(attrs={'class': 'form-control-file'}),
+        'image': forms.FileInput(attrs={'class': 'form-control-file', 'placeholder': 'Images', 'multiple': True}),
     }
 
 class CrimeReportVideoForm(forms.ModelForm):
@@ -31,5 +31,6 @@ class CrimeReportVideoForm(forms.ModelForm):
         fields = ['video']
 
     widgets = {
-        'video': forms.FileInput(attrs={'class': 'form-control-file'}),
+        'video': forms.FileInput(attrs={'class': 'form-control-file', 'placeholder': 'Videos', 'multiple': True}),
     }
+
