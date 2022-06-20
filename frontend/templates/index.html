@@ -103,16 +103,21 @@
                 </div>
 
                 <div id="uploadCrimeVideo" class="modal" tabindex="0" style="z-index: 1003; display: none; opacity: 0; top: 4%; transform: scaleX(0.8) scaleY(0.8);">
-                  <form action="" method="POST">{% csrf_token %}
+                  <form action="{% url 'crimereports:upload-crime' %}" method="POST">{% csrf_token %}
                       <div class="modal-content">
                         <h4>Upload</h4>
                         <div class="row ">
+
                           <div class="col s12 pad-0">
-                            
-                          
-                          
                             <div class="input-field col s12">
-                              <textarea id="textarea2" class="materialize-textarea" data-length="120" style="height: 42px;"></textarea>
+                              {{  crime_form.location }}
+                              <label for="textarea2" class="">Town Located</label>
+                            <span class="character-counter" style="float: right; font-size: 12px;">0/120</span></div>
+                          </div>
+
+                          <div class="col s12 pad-0">
+                            <div class="input-field col s12">
+                              {{  crime_form.location_description }}
                               <label for="textarea2" class="">Describe your Location</label>
                             <span class="character-counter" style="float: right; font-size: 12px;">0/120</span></div>
                           </div>
@@ -120,10 +125,20 @@
                           <div class="file-field col input-field s12">
                             <div class="btn">
                               <span>File</span>
-                              <input type="file" multiple="">
+                              {{crime_image_form.image}}
                             </div>
                             <div class="file-path-wrapper">
-                              <input class="file-path validate" type="text" placeholder="Upload the video">
+                              <input class="file-path validate" type="text" placeholder="Upload the images">
+                            </div>
+                          </div>
+
+                          <div class="file-field col input-field s12">
+                            <div class="btn">
+                              <span>File</span>
+                              {{crime_video_form.video}}
+                            </div>
+                            <div class="file-path-wrapper">
+                              <input class="file-path validate" type="text" placeholder="Upload the Videos">
                             </div>
                           </div>
     
@@ -132,7 +147,8 @@
                       </div>
                       <div class="modal-footer">
                         <a href="#!" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
-                        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Upload</a>
+                        <button type="submit" class="waves-effect waves-green btn-flat">Upload</button>
+                        
                       </div>
                   </form>
                 </div>

@@ -4,14 +4,14 @@ from crimereports.forms import CrimeReportForm, CrimeReportImageForm, CrimeRepor
 
 
 def index(request, *args, **kwargs):
-    crime_forms = CrimeReportForm()
-    crime_image_forms = CrimeReportImageForm()
-    crime_video_forms = CrimeReportVideoForm()
+    crime_form = CrimeReportForm()
+    crime_image_form = CrimeReportImageForm()
+    crime_video_form = CrimeReportVideoForm()
 
     context = {
-        'crime_forms': crime_forms,
-        'crime_image_forms': crime_image_forms,
-        'crime_video_forms': crime_video_forms,
+        'crime_form': crime_form,
+        'crime_image_form': crime_image_form,
+        'crime_video_form': crime_video_form,
     }
     return render(request, 'index.html', context)
 

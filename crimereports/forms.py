@@ -10,7 +10,9 @@ class CrimeReportForm(forms.ModelForm):
 
     widgets = {
         'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Location'}),
-        'location_description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Location Description'}),
+        'location_description': forms.Textarea(attrs={'class': 'materialize-textarea', 
+                                                        'placeholder': 'Location Description',
+                                                        'data-length': '120'}),
         'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
     }
 

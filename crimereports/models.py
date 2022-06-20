@@ -30,11 +30,6 @@ class CrimeReportImage(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.description)+'-'+str(self.timestamp)
-        super(CrimeReportImage, self).save(*args, **kwargs)
-
     def __str__(self):
         return self.crime_report.location + ' ' + str(self.timestamp)
 
