@@ -14,12 +14,11 @@ class CrimeReport(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     location_description = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    slug = models.SlugField(max_length=100, unique=True, blank=True, null=True)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.location)+'-'+str(self.timestamp)
-        super(CrimeReport, self).save(*args, **kwargs)    
+    def __str__(self):
+        return self.location+' - '+str(self.timestamp)
+
 
 class CrimeReportImage(models.Model):
     """

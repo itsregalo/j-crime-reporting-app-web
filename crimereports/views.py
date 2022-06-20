@@ -1,5 +1,5 @@
 from audioop import reverse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .forms import CrimeReportForm, CrimeReportImageForm, CrimeReportVideoForm
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
@@ -22,7 +22,7 @@ def upload_crime_report(request):
             crime_report_videos.crime_report = crime_report
             crime_report_videos.save()
             messages.success(request, 'Crime Uploaded Successfully')
-            return HttpResponseRedirect(reverse('core:index'))
+            return redirect('core:index')
         messages.error(request, 'Error Uploading Crime')
-        return HttpResponseRedirect(reverse('core:index'))
+        return redirect('core:index')
 
