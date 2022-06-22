@@ -43,3 +43,5 @@ class CrimeReportVideo(models.Model):
 
     def __str__(self):
         return self.video.name + ' - ' + str(self.timestamp)
+
+    
