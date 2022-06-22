@@ -6,34 +6,7 @@
 {% block body %}
 
 
-
-<!-- START navigation -->
-<nav class="fixedtop topbar navigation" role="navigation">
-    <div class="nav-wrapper container">
-      <a id="logo-container" href="index.html" class=" brand-logo " ><i class="mdi mdi-ring"></i>JCR</a>
-
-        <a href="#" data-target="" class="waves-effect waves-circle navicon back-button htmlmode show-on-large "><i class="mdi mdi-chevron-left" data-page=""></i></a>
-
-        <a href="#" data-target="slide-nav" class="waves-effect waves-circle navicon sidenav-trigger show-on-large"><i class="mdi mdi-menu"></i></a>
-
-
-
-        <a href="#" data-target="slide-settings" class="waves-effect waves-circle navicon right sidenav-trigger show-on-large pulse"><i class="mdi mdi-tune"></i></a>
-
-        <a href="#" data-target="" class="waves-effect waves-circle navicon right nav-site-mode show-on-large"><i class="mdi mdi-invert-colors mdi-transition1"></i></a>
-      <!-- <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a> -->
-    </div>
-  </nav>
-<ul id="slide-nav" class="sidenav sidemenu">
-   
-
-
-            {% include 'partials/navigation.html' %}
-            
-
-</ul>
-<!-- END navigation -->
-
+{% include 'partials/navigation.html' %}
 
 <ul id="slide-settings" class="sidenav sidesettings right fixed">
     <li class="menulinks">
@@ -132,7 +105,7 @@
 
                 <div class="col s6">
                     <div class="setting-box z-depth-1 center">
-                    <a href="#!">
+                    <a href="{% url 'crimereports:upload-terrorism' %}">
                         <i class="mdi mdi-midi-port"></i>
                         <h6>Report Terrorism Activities</h6>
                     </a>

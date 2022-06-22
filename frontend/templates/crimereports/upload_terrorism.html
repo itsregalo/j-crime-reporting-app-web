@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Report Terrorism{% endblock title %}
+
+{% block body %}
+
+{% include 'partials/navigation.html' %}
+
+<div class="container">
+
+<div id="uploadCrimeVideo" >
+    <form action="{% url 'crimereports:upload-terrorism' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+        <div class="modal-content">
+          <h4>Upload</h4>
+          <div class="row ">
+
+            <div class="col s12 pad-0">
+              <div class="input-field col s12">
+                {{  terrorism_form.county }}
+                <label for="textarea2" class="">County Located</label>
+              <span class="character-counter" style="float: right; font-size: 12px;">0/120</span></div>
+            </div>
+
+            <div class="col s12 pad-0">
+              <div class="input-field col s12">
+                {{  terrorism_form.location_description }}
+                <label for="textarea2" class="">Describe your Location</label>
+              <span class="character-counter" style="float: right; font-size: 12px;">0/120</span></div>
+            </div>
+
+            <div class="col s12 pad-0">
+                <div class="input-field col s12">
+                  {{  terrorism_form.description }}
+                  <label for="textarea2" class="">Describe The incidence</label>
+                <span class="character-counter" style="float: right; font-size: 12px;">0/120</span></div>
+              </div>
+
+            <div class="file-field col input-field s12">
+              <div class="btn">
+                <span>File</span>
+                {{terrorism_image_form.image}}
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="Upload the images">
+              </div>
+            </div>
+
+            <div class="file-field col input-field s12">
+              <div class="btn">
+                <span>File</span>
+                {{terrorism_video_form.video}}
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="Upload the Videos">
+              </div>
+            </div>
+
+
+            </div>
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-close waves-effect waves-red btn-flat">Cancel</a>
+          <button type="submit" class="waves-effect waves-green btn-flat">Upload</button>
+          
+        </div>
+    </form>
+  </div>
+</div>
+
+
+{% endblock body %}

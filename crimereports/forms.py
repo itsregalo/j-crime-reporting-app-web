@@ -49,11 +49,11 @@ class TerrorismReportForm(forms.ModelForm):
         fields = ['county', 'location_description', 'description']
 
     widgets = {
-        'county': forms.Select(attrs={'class': 'form-control', 'placeholder': 'County'}),
+        'county': forms.Select(attrs={}),
         'location_description': forms.Textarea(attrs={'class': 'materialize-textarea', 
                                                         'placeholder': 'Location Description',
                                                         'data-length': '120'}),
-        'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
+        'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'})
     }
 
 class TerrorismReportImageForm(forms.ModelForm):

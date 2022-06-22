@@ -25,6 +25,7 @@ def upload_crime_report(request):
             return redirect('core:index')
         messages.error(request, 'Error Uploading Crime')
         return redirect('core:index')
+    return
 
 def upload_terrorism_report(request):
     terrorism_form = TerrorismReportForm()

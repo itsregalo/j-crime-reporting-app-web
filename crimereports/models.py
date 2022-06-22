@@ -11,7 +11,7 @@ from accounts.models import User
 class County(models.Model):
     name = models.CharField(max_length=100)
     county_no = models.PositiveSmallIntegerField(unique=True)
-    slug = models.SlugField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'Counties'
@@ -62,7 +62,7 @@ class CrimeReportImage(models.Model):
         db_table = 'crime_report_images'
 
     def __str__(self):
-        return self.crime_report.location + ' ' + str(self.timestamp)
+        return str(self.timestamp)
 
 class CrimeReportVideo(models.Model):
     """
@@ -83,7 +83,7 @@ class CrimeReportVideo(models.Model):
 
 class Terrorism(models.Model):
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, blank=True, null=True)
-    county = models.ForeignKey(County, on_delete=models.CASCADE)
+    county = models.ForeignKey(County, on_delete=models.CASCADE, blank=True, null=True)
     location_description = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -95,7 +95,7 @@ class Terrorism(models.Model):
         db_table = 'terrorism'
 
     def __str__(self):
-        return self.county.name+'-'+str(self.timestamp)
+        return self.location_description+'-'+str(self.timestamp)
 
 class TerrorismReportImage(models.Model):
     """
@@ -113,7 +113,7 @@ class TerrorismReportImage(models.Model):
 
 
     def __str__(self):
-        return self.crime_report.location + ' ' + str(self.timestamp)
+        return str(self.timestamp)
 
 class TerrorismReportVideo(models.Model):
     """
@@ -137,7 +137,7 @@ class TerrorismReportVideo(models.Model):
 
 class SuspiciousActivity(models.Model):
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, blank=True, null=True)
-    county = models.ForeignKey(County, on_delete=models.CASCADE)
+    county = models.ForeignKey(County, on_delete=models.CASCADE, blank=True, null=True)
     location_description = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -148,7 +148,7 @@ class SuspiciousActivity(models.Model):
         db_table = 'suspicious_activities'
 
     def __str__(self):
-        return self.county.name+'-'+str(self.timestamp)
+        return self.location_description+'-'+str(self.timestamp)
 
 class SuspiciousActivityReportImage(models.Model):
     """
@@ -165,7 +165,7 @@ class SuspiciousActivityReportImage(models.Model):
         db_table = 'suspicious_activities_images'
 
     def __str__(self):
-        return self.crime_report.location + ' ' + str(self.timestamp)
+        return str(self.timestamp)
 
 class SuspiciousReportVideo(models.Model):
     """
@@ -189,7 +189,7 @@ class SuspiciousReportVideo(models.Model):
 
 class LostItem(models.Model):
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, blank=True, null=True)
-    county = models.ForeignKey(County, on_delete=models.CASCADE)
+    county = models.ForeignKey(County, on_delete=models.CASCADE, blank=True, null=True)
     location_description = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -201,7 +201,7 @@ class LostItem(models.Model):
         db_table = 'lost_items'
 
     def __str__(self):
-        return self.county.name+'-'+str(self.timestamp)
+        return self.location_description+'-'+str(self.timestamp)
 
 class LostItemReportImage(models.Model):
     """
@@ -218,7 +218,7 @@ class LostItemReportImage(models.Model):
         db_table = 'lost_items_images'
 
     def __str__(self):
-        return self.crime_report.location + ' ' + str(self.timestamp)
+        return str(self.timestamp)
 
 class LostItemVideo(models.Model):
     """
@@ -242,7 +242,7 @@ class LostItemVideo(models.Model):
 
 class TheftReport(models.Model):
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, blank=True, null=True)
-    county = models.ForeignKey(County, on_delete=models.CASCADE)
+    county = models.ForeignKey(County, on_delete=models.CASCADE, blank=True, null=True)
     location_description = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -254,7 +254,7 @@ class TheftReport(models.Model):
         db_table = 'theft_reports'
 
     def __str__(self):
-        return self.county.name+'-'+str(self.timestamp)
+        return self.location_description+'-'+str(self.timestamp)
 
 class TheftReportImage(models.Model):
     """
@@ -271,7 +271,7 @@ class TheftReportImage(models.Model):
         db_table = 'theft_reports_images'
 
     def __str__(self):
-        return self.crime_report.location + ' ' + str(self.timestamp)
+        return str(self.timestamp)
 
 class TheftReportVideo(models.Model):
     """
@@ -292,7 +292,7 @@ class TheftReportVideo(models.Model):
 
 class MostWanted(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    county = models.ForeignKey(County, on_delete=models.CASCADE)
+    county = models.ForeignKey(County, on_delete=models.CASCADE, blank=True, null=True)
     image = models.ImageField(upload_to='images/%Y/%m/%d', blank=True, null=True)
     image_thumbnail = ImageSpecField(source='image', processors=[ResizeToFill(100, 100)], format='JPEG', options={'quality': 60})
     description = models.TextField(blank=True, null=True)
@@ -306,7 +306,7 @@ class MostWanted(models.Model):
         db_table = 'most_wanted'
 
     def __str__(self):
-        return self.county.name+'-'+str(self.timestamp)
+        return self.location_description+'-'+str(self.timestamp)
 
 class MostWantedImages(models.Model):
     """
@@ -323,4 +323,4 @@ class MostWantedImages(models.Model):
         db_table = 'most_wanted_images'
 
     def __str__(self):
-        return self.crime_report.location + ' ' + str(self.timestamp)
+        return str(self.timestamp)
