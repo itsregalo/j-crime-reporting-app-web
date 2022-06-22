@@ -27,6 +27,9 @@ def upload_crime_report(request):
         return redirect('core:index')
 
 def upload_terrorism_report(request):
+    terrorism_form = TerrorismReportForm()
+    terrorism_image_form = TerrorismReportImageForm()
+    terrorism_video_form = TerrorismReportVideoForm()
     if request.method == 'POST':
         form = TerrorismReportForm(request.POST, request.FILES)
         # get form images and videos in CrimeReportImageForm and CrimeReportVideoForm
@@ -44,8 +47,15 @@ def upload_terrorism_report(request):
             return redirect('core:index')
         messages.error(request, 'Error Uploading Crime')
         return redirect('core:index')
+    context = {
+        'terrorism_form': terrorism_form,
+        'terrorism_image_form': terrorism_image_form,
+        'terrorism_video_form': terrorism_video_form,
+    }
+    return render(request, 'crimereports/upload_terrorism.html', context)
 
 def upload_suspicious_activity_report(request):
+
     if request.method == 'POST':
         form = SuspiciousActivityForm(request.POST, request.FILES)
         # get form images and videos in CrimeReportImageForm and CrimeReportVideoForm
@@ -63,6 +73,12 @@ def upload_suspicious_activity_report(request):
             return redirect('core:index')
         messages.error(request, 'Error Uploading Crime')
         return redirect('core:index')
+    context = {
+        'suspicious_activity_form': SuspiciousActivityForm(),
+        'suspicious_activity_image_form': SuspiciousActivityImageForm(),
+        'suspicious_activity_video_form': SuspiciousActivityVideoForm(),
+    }
+    return render(request, 'crimereports/upload_suspicious_activity.html', context)
 
 
 def upload_lost_item_report(request):
@@ -83,6 +99,13 @@ def upload_lost_item_report(request):
             return redirect('core:index')
         messages.error(request, 'Error Uploading Crime')
         return redirect('core:index')
+    context = {
+        'lost_item_form': LostItemForm(),
+        'lost_item_image_form': LostItemImageForm(),
+        'lost_item_video_form': LostItemVideoForm(),
+    }
+    return render(request, 'crimereports/upload_lost_item.html', context)
+
 
 
 def upload_theft_report(request):
@@ -103,6 +126,13 @@ def upload_theft_report(request):
             return redirect('core:index')
         messages.error(request, 'Error Uploading Crime')
         return redirect('core:index')
+    context = {
+        'theft_form': TheftForm(),
+        'theft_image_form': TheftImageForm(),
+        'theft_video_form': TheftVideoForm(),
+    }
+    return render(request, 'crimereports/upload_theft.html', context)
+
 
 def most_wanted(request):
     most_wanted_criminals = MostWanted.objects.filter(is_captured=False)
