@@ -4,6 +4,7 @@ from .models import *
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.http import request
+from .utils import generate_code
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'validated'}))
@@ -97,7 +98,8 @@ class RegistrationForm(forms.Form):
         user = User.objects.create_user(
             username=username,
             phone_no=phone_no, 
-            email=email
+            email=email,
+            ver_code = generate_code()
             )
         user.set_password(password)
         user.is_active=False

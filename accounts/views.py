@@ -12,6 +12,7 @@ from .utils import token_gen
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.auth import get_user_model
 from decouple import config
+from config.africanstalking_config import sms
 
 from .forms import LoginForm, RegistrationForm
 User = get_user_model()
@@ -26,17 +27,6 @@ import africastalking
 username = "vax"
 api_key = config('API_KEY')
 africastalking.initialize(username, api_key)
-
-
-
-# Create your views here.
-# class EmailThread(threading.Thread):
-#     def __init__(self, mail):
-#         self.mail = mail
-#         threading.Thread.__init__(self)
-        
-#     def run(self):
-#         self.mail.send_mail()
 
      
    
@@ -75,23 +65,15 @@ def RegisterView(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            phone = user.phone
             
-            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-            domain = get_current_site(request).domain #gives us the domain
-            link = reverse('accounts:activate', 
-                            kwargs={
-                                'uidb64':uidb64, 
-                                'token':token_gen.make_token(user)
-                                    })
-            activate_url = f"http://{domain+link}"
-            
-            mail_subject = "Activate your account"
+            # pass phone to session
+            request.session['phone'] = phone
 
-            
-            mail_body = f"hi {user.username} click the link below to verify your account\n {activate_url}"
-            mail = send_mail (mail_subject, mail_body,'noreply@courses.com',[user.email], fail_silently=False)
-            messages.success(request, "Account created, Check your email to activate your account")
-            return redirect('accounts:login')
+            sms_content = f"Your verification code is {user.ver_code}"
+            sms.send(sms_content, [phone])
+            messages.info(request, "A verification code has been sent to your phone number")
+            return redirect('accounts:phone-verification')
         print(form.errors)
         return render(request, 'auth/register.html')
             
